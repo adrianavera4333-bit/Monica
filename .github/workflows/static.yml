@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALENTINE'S QUEST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ff4d6d;
+            --box-bg: #fff0f3;
+            --pixel-border: #590d22;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Contenedor tipo Game Boy */
+        #game-container {
+            background-color: var(--box-bg);
+            border: 8px solid var(--pixel-border);
+            padding: 30px;
+            width: 85%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        h1 { font-size: 16px; color: #c9184a; line-height: 1.5; }
+        p { font-size: 10px; color: #590d22; margin-bottom: 20px; }
+
+        .btn {
+            background-color: white;
+            border: 4px solid var(--pixel-border);
+            padding: 15px 10px;
+            margin: 10px 0;
+            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .btn:active { transform: scale(0.95); }
+        .btn-yes { background-color: #80ffdb; }
+        .btn-no { background-color: #ff758f; position: relative; }
+
+        /* Corazones cayendo */
+        .corazon {
+            position: fixed;
+            top: -50px;
+            font-size: 20px;
+            z-index: 1000;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        .hidden { display: none; }
+
+        /* Vibración de error */
+        .shake { animation: shake 0.3s; }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(10px); }
+            50% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="lvl1">
+            <p>[ LEVEL 01 ]</p>
+            <h1>¿Cómo nos conocimos?</h1>
+            <button class="btn" onclick="next(2)">En una fiesta 💃</button>
+            <button class="btn" onclick="wrong('lvl1')">En el trabajo 💼</button>
+            <button class="btn" onclick="wrong('lvl1')">Por un error del destino 🌌</button>
+        </div>
+
+        <div id="lvl2" class="hidden">
+            <p>[ LEVEL 02 ]</p>
+            <h1>¿Cuánto te quiero?</h1>
+            <button class="btn" onclick="wrong('lvl2')">Del 1 al 10: 10</button>
+            <button class="btn" onclick="next(3)">Del 1 al 10: ¡1000! ❤️</button>
+            <button class="btn" onclick="wrong('lvl2')">Poquito 🤏</button>
+        </div>
+
+        <div id="lvl3" class="hidden">
+            <p>[ FINAL BOSS ]</p>
+            <h1>¿Quieres ser mi San Valentín?</h1>
+            <button class="btn btn-yes" onclick="win()">¡SÍ, ACEPTO! 💖</button>
+            <button id="btn-no" class="btn btn-no" onmouseover="moveNo()" onclick="moveNo()">NO ❌</button>
+        </div>
+
+        <div id="final" class="hidden">
+            <h1>¡LEVEL CLEAR! 🏆</h1>
+            <p style="font-size: 14px;">Sabía que dirías que sí...</p>
+            <div style="font-size: 40px;">🐱❤️🐶</div>
+            <p style="margin-top: 20px;">Nos vemos el 14.</p>
+        </div>
+    </div>
+
+    <script>
+        function next(lvl) {
+            document.getElementById('lvl1').classList.add('hidden');
+            document.getElementById('lvl2').classList.add('hidden');
+            document.getElementById('lvl3').classList.add('hidden');
+            document.getElementById('lvl' + lvl).classList.remove('hidden');
+        }
+
+        function wrong(id) {
+            const el = document.getElementById(id);
+            el.classList.add('shake');
+            setTimeout(() => el.classList.remove('shake'), 300);
+            alert("¡ERROR! Intenta de nuevo... ❌");
+        }
+
+        function moveNo() {
+            const btn = document.getElementById('btn-no');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function win() {
+            document.getElementById('lvl3').classList.add('hidden');
+            document.getElementById('final').classList.remove('hidden');
+            document.body.style.backgroundColor = "#ff8fa3";
+            setInterval(createHeart, 300);
+        }
+
+        function createHeart() {
+            const h = document.createElement('div');
+            h.classList.add('corazon');
+            h.innerText = '❤️';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 4000);
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALENTINE'S QUEST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ff4d6d;
+            --box-bg: #fff0f3;
+            --pixel-border: #590d22;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Press Start 2P', cursive;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Contenedor tipo Game Boy */
+        #game-container {
+            background-color: var(--box-bg);
+            border: 8px solid var(--pixel-border);
+            padding: 30px;
+            width: 85%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        h1 { font-size: 16px; color: #c9184a; line-height: 1.5; }
+        p { font-size: 10px; color: #590d22; margin-bottom: 20px; }
+
+        .btn {
+            background-color: white;
+            border: 4px solid var(--pixel-border);
+            padding: 15px 10px;
+            margin: 10px 0;
+            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .btn:active { transform: scale(0.95); }
+        .btn-yes { background-color: #80ffdb; }
+        .btn-no { background-color: #ff758f; position: relative; }
+
+        /* Corazones cayendo */
+        .corazon {
+            position: fixed;
+            top: -50px;
+            font-size: 20px;
+            z-index: 1000;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        .hidden { display: none; }
+
+        /* Vibración de error */
+        .shake { animation: shake 0.3s; }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(10px); }
+            50% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="lvl1">
+            <p>[ LEVEL 01 ]</p>
+            <h1>¿Cómo nos conocimos?</h1>
+            <button class="btn" onclick="next(2)">En una fiesta 💃</button>
+            <button class="btn" onclick="wrong('lvl1')">En el trabajo 💼</button>
+            <button class="btn" onclick="wrong('lvl1')">Por un error del destino 🌌</button>
+        </div>
+
+        <div id="lvl2" class="hidden">
+            <p>[ LEVEL 02 ]</p>
+            <h1>¿Cuánto te quiero?</h1>
+            <button class="btn" onclick="wrong('lvl2')">Del 1 al 10: 10</button>
+            <button class="btn" onclick="next(3)">Del 1 al 10: ¡1000! ❤️</button>
+            <button class="btn" onclick="wrong('lvl2')">Poquito 🤏</button>
+        </div>
+
+        <div id="lvl3" class="hidden">
+            <p>[ FINAL BOSS ]</p>
+            <h1>¿Quieres ser mi San Valentín?</h1>
+            <button class="btn btn-yes" onclick="win()">¡SÍ, ACEPTO! 💖</button>
+            <button id="btn-no" class="btn btn-no" onmouseover="moveNo()" onclick="moveNo()">NO ❌</button>
+        </div>
+
+        <div id="final" class="hidden">
+            <h1>¡LEVEL CLEAR! 🏆</h1>
+            <p style="font-size: 14px;">Sabía que dirías que sí...</p>
+            <div style="font-size: 40px;">🐱❤️🐶</div>
+            <p style="margin-top: 20px;">Nos vemos el 14.</p>
+        </div>
+    </div>
+
+    <script>
+        function next(lvl) {
+            document.getElementById('lvl1').classList.add('hidden');
+            document.getElementById('lvl2').classList.add('hidden');
+            document.getElementById('lvl3').classList.add('hidden');
+            document.getElementById('lvl' + lvl).classList.remove('hidden');
+        }
+
+        function wrong(id) {
+            const el = document.getElementById(id);
+            el.classList.add('shake');
+            setTimeout(() => el.classList.remove('shake'), 300);
+            alert("¡ERROR! Intenta de nuevo... ❌");
+        }
+
+        function moveNo() {
+            const btn = document.getElementById('btn-no');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function win() {
+            document.getElementById('lvl3').classList.add('hidden');
+            document.getElementById('final').classList.remove('hidden');
+            document.body.style.backgroundColor = "#ff8fa3";
+            setInterval(createHeart, 300);
+        }
+
+        function createHeart() {
+            const h = document.createElement('div');
+            h.classList.add('corazon');
+            h.innerText = '❤️';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
